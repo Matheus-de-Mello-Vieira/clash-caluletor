@@ -8,6 +8,7 @@ package com.mycompany.clashcalculetor.GUI;
 import com.mycompany.clashcalculetor.Models.Client;
 import com.mycompany.clashcalculetor.Service.ClientService;
 import com.mycompany.clashcalculetor.Util.Exception.PasswordDontMachException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**

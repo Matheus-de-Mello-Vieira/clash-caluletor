@@ -7,6 +7,7 @@ package com.mycompany.clashcalculetor.GUI;
 
 import com.mycompany.clashcalculetor.Service.ChestService;
 import javax.swing.AbstractButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
@@ -21,7 +22,15 @@ public class WhatChest extends javax.swing.JFrame {
      * Creates new form WhatChest
      */
     ChestService chestService;
-    public WhatChest() {
+    JFrame dad;
+    
+    @Override
+    public void setVisible(boolean b){
+        dad.setEnabled(!b);
+        super.setVisible(b);
+    }
+    public WhatChest(JFrame dad){
+        this.dad=dad;
         this.chestService = new ChestService();
         initComponents();
     }
@@ -43,7 +52,7 @@ public class WhatChest extends javax.swing.JFrame {
 
         jLabel1.setText("jLabel1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridLayout(3, 0));
 
         jLabel2.setText("What chest?");

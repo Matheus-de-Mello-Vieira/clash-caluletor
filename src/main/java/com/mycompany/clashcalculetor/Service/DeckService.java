@@ -61,8 +61,8 @@ public class DeckService {
         deck.setIdClient(client);
         deckDao.addDeck(cart, deck);
         }catch(HibernateException he){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }

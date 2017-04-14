@@ -17,6 +17,8 @@ import java.util.Arrays;
  */
 public class JanelaPrincipal extends javax.swing.JFrame {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates new form JanelaPrincipal
      */
@@ -145,7 +147,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new DeckAdd().setVisible(true);
+        new DeckAdd(this).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -170,7 +172,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        new ChestFrame().setVisible(true);
+        new ChestFrame(this).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

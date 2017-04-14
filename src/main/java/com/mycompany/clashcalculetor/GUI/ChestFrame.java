@@ -8,6 +8,7 @@ package com.mycompany.clashcalculetor.GUI;
 import com.mycompany.clashcalculetor.Models.Chest;
 import com.mycompany.clashcalculetor.Service.ChestService;
 import com.mycompany.clashcalculetor.Util.Type.NextChest;
+import javax.swing.JFrame;
 
 /**
  *
@@ -22,7 +23,15 @@ public class ChestFrame extends javax.swing.JFrame {
      * @param nextChest
      */
     ChestService chestService;
-    public ChestFrame(){
+    JFrame dad;
+    
+    @Override
+    public void setVisible(boolean b){
+        dad.setEnabled(!b);
+        super.setVisible(b);
+    }
+    public ChestFrame(JFrame dad){
+        this.dad=dad;
         chestService = new ChestService();
         NextChest nextChest=chestService.calculetorNextChest();
         initComponents();
@@ -59,7 +68,7 @@ public class ChestFrame extends javax.swing.JFrame {
         SilverLabel = new javax.swing.JLabel();
         GoldLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 

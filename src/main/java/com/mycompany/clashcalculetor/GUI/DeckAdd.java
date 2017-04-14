@@ -7,9 +7,9 @@ package com.mycompany.clashcalculetor.GUI;
 
 import com.mycompany.clashcalculetor.Dao.CartDao;
 import com.mycompany.clashcalculetor.Models.Cart;
-import com.mycompany.clashcalculetor.Service.ChestService;
 import com.mycompany.clashcalculetor.Service.ClientService;
 import com.mycompany.clashcalculetor.Service.DeckService;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,7 +19,15 @@ import javax.swing.JOptionPane;
 public class DeckAdd extends javax.swing.JFrame {
 
     DeckService deckService;
-    public DeckAdd() {
+    JFrame dad;
+    
+    @Override
+    public void setVisible(boolean b){
+        dad.setEnabled(!b);
+        super.setVisible(b);
+    }
+    public DeckAdd(JFrame dad) {
+        this.dad=dad;
         this.deckService = new DeckService();
         Cart[] carts=deckService.ListAllCarts();
         
@@ -65,7 +73,7 @@ public class DeckAdd extends javax.swing.JFrame {
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.GridLayout(11, 0));
 
@@ -132,7 +140,7 @@ public class DeckAdd extends javax.swing.JFrame {
         }
         //next chest
         if(jRadioButton1.isSelected()||JOptionPane.showConfirmDialog(this, "You receve a chest?")==0){
-            new WhatChest().setVisible(true);
+            new WhatChest(this).setVisible(true);
         }
         setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
