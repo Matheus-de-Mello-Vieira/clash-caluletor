@@ -6,10 +6,8 @@
 package com.mycompany.clashcalculetor.GUI;
 
 import com.mycompany.clashcalculetor.Service.ChestService;
-import javax.swing.AbstractButton;
+import com.mycompany.clashcalculetor.Service.ClientService;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 
 /**
  *
@@ -76,9 +74,10 @@ public class WhatChest extends javax.swing.JFrame {
         if(String.valueOf(jComboBox1.getSelectedItem()).equals("Other")){
             chestService.nextChest();
         }else{
-            chestService.nextChest(String.valueOf(jComboBox1.getSelectedItem()));
-        }
-        setVisible(false);
+             if(chestService.nextChest(String.valueOf(jComboBox1.getSelectedItem()))){
+                 setVisible(false);
+             }
+        }        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -27,6 +27,7 @@ public class CartDao {
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<Cart> criteria= cb.createQuery(Cart.class);
         criteria.from(Cart.class);
+        
         return session.createQuery(criteria).getResultList().toArray(new Cart[0]);
     }
     public Cart findById(int id) {

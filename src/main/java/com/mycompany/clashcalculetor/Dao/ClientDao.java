@@ -3,6 +3,7 @@ package com.mycompany.clashcalculetor.Dao;
 import com.mycompany.clashcalculetor.Models.Chest;
 import com.mycompany.clashcalculetor.Util.HibernateUtil;
 import com.mycompany.clashcalculetor.Models.Client;
+import com.mycompany.clashcalculetor.Service.ClientService;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -67,5 +68,13 @@ public class ClientDao {
         criteria.where(cb.equal(root.get("password"), password));
         return !session.createQuery(criteria).getResultList().isEmpty();
     }
-
+     public void update(Client client){
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        client.getIdArena();
+        session.merge(client);
+        session.flush();
+        transaction.commit();
+        session.close();
+    }
 }

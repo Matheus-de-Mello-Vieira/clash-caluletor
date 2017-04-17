@@ -7,9 +7,11 @@ package com.mycompany.clashcalculetor.GUI;
 
 import com.mycompany.clashcalculetor.Service.ClientService;
 import com.mycompany.clashcalculetor.Service.DeckService;
+import com.mycompany.clashcalculetor.Util.Main;
 import com.mycompany.clashcalculetor.Util.TableModel.CartListTableModel;
 import com.mycompany.clashcalculetor.Util.TableModel.CartOrderTableModel;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,12 +24,24 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form JanelaPrincipal
      */
-    DeckService deckService;
+    private DeckService deckService;
 
     public JanelaPrincipal() {
+        Main.afterLogin();
         deckService = new DeckService();
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         jTable1.setModel(new CartOrderTableModel(deckService.OrderByClient(ClientService.getCurrentClient())));
+    }
+
+    public void OrderList(Integer result) {
+        switch (result) {
+                case 0:
+                    jTable1.setModel(new CartOrderTableModel(deckService.OrderAll()));
+                    break;
+                default:
+                    jTable1.setModel(new CartOrderTableModel(deckService.orderByArena(result)));
+            }
     }
 
     /**
@@ -46,6 +60,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -72,9 +87,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(jButton3, gridBagConstraints);
 
@@ -109,10 +123,20 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(jButton6, gridBagConstraints);
+
+        jButton2.setText("Arena");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel1.add(jButton2, gridBagConstraints);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -162,12 +186,14 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         if (jButton4.getText().equals("All")) {
             jTable1.setModel(new CartOrderTableModel(deckService.OrderByClient(ClientService.getCurrentClient())));
             jButton4.setText("Order");
-        } else if (jButton4.getText().equals("List")) {
-            jTable1.setModel(new CartOrderTableModel(deckService.OrderAll()));
-            jButton4.setText("All");
         } else if (jButton4.getText().equals("Order")) {
             jTable1.setModel(new CartListTableModel(deckService.listDecks(ClientService.getCurrentClient())));
             jButton4.setText("List");
+        } else if (jButton4.getText().equals("List")) {
+            //filtre
+            FilterArena filterArena = new FilterArena(this);
+            filterArena.setVisible(true);
+            jButton4.setText("All");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -176,9 +202,15 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         new ChestFrame(this).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        new ArenaFrame(this).setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;

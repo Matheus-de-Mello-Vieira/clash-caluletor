@@ -7,6 +7,7 @@ package com.mycompany.clashcalculetor.Models;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -73,7 +74,7 @@ public class Cart implements Serializable {
 
     @XmlTransient
     public Collection<Deck> getDeckCollection() {
-        return deckCollection;
+        return Collections.unmodifiableCollection(deckCollection);
     }
 
     public void setDeckCollection(Collection<Deck> deckCollection) {

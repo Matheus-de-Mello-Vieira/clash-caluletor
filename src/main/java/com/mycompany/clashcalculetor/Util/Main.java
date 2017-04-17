@@ -18,11 +18,11 @@ public class Main {
         //Open a session
         HibernateUtil.getSession();
 
-        //Create a file, if it is the firt time
-        (new ChestService()).createFile();
-
         //Start the windowns
         Login login = new Login();
     }
-
+    public static void afterLogin() {
+        //Create a file, if it is the firt time
+        (new ChestService()).createFile();
+    }
 }

@@ -43,13 +43,14 @@ Contributor(s):
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/clash_calculetor?zeroDateTimeBehavior=convertToNull</property>
-    <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">adm1234</property>
+    <property name="hibernate.connection.url">jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10169590?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">sql10169590</property>
+    <property name="hibernate.connection.password">ZBUR24M3DF</property>
     
-    <mapping class="com.mycompany.clashcalculetor.Models.Client"/>
+     <mapping class="com.mycompany.clashcalculetor.Models.Client"/>
     <mapping class="com.mycompany.clashcalculetor.Models.Cart"/>
     <mapping class="com.mycompany.clashcalculetor.Models.Deck"/>
     <mapping class="com.mycompany.clashcalculetor.Models.Chest"/>
+    <mapping class="com.mycompany.clashcalculetor.Models.Arena"/>
   </session-factory>
 </hibernate-configuration>

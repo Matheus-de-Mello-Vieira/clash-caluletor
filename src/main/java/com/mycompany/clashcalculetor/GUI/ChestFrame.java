@@ -5,8 +5,8 @@
  */
 package com.mycompany.clashcalculetor.GUI;
 
-import com.mycompany.clashcalculetor.Models.Chest;
 import com.mycompany.clashcalculetor.Service.ChestService;
+import com.mycompany.clashcalculetor.Service.ClientService;
 import com.mycompany.clashcalculetor.Util.Type.NextChest;
 import javax.swing.JFrame;
 
@@ -32,7 +32,7 @@ public class ChestFrame extends javax.swing.JFrame {
     }
     public ChestFrame(JFrame dad){
         this.dad=dad;
-        chestService = new ChestService();
+        chestService = new ChestService(ClientService.getCurrentClient());
         NextChest nextChest=chestService.calculetorNextChest();
         initComponents();
         MagicLabel.setText(String.valueOf(nextChest.getPorcentMagic()));
@@ -58,7 +58,6 @@ public class ChestFrame extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -98,17 +97,6 @@ public class ChestFrame extends javax.swing.JFrame {
         getContentPane().add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel2.setLayout(new java.awt.GridBagLayout());
-
-        jButton3.setText("Delete Progress");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        jPanel2.add(jButton3, gridBagConstraints);
 
         jLabel2.setText("Silver Chest:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -168,11 +156,6 @@ public class ChestFrame extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        chestService.resetFile();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel GigantLabel;
@@ -180,7 +163,6 @@ public class ChestFrame extends javax.swing.JFrame {
     private javax.swing.JLabel MagicLabel;
     private javax.swing.JLabel SilverLabel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

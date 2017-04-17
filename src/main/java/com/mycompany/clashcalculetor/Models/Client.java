@@ -7,6 +7,7 @@ package com.mycompany.clashcalculetor.Models;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -22,11 +23,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c")
     , @NamedQuery(name = "Client.findByIdClient", query = "SELECT c FROM Client c WHERE c.idClient = :idClient")
     , @NamedQuery(name = "Client.findByName", query = "SELECT c FROM Client c WHERE c.name = :name")
-    , @NamedQuery(name = "Client.findByPassword", query = "SELECT c FROM Client c WHERE c.password = :password")
-    , @NamedQuery(name = "Client.findByArena", query = "SELECT c FROM Client c WHERE c.arena = :arena")})
+    , @NamedQuery(name = "Client.findByPassword", query = "SELECT c FROM Client c WHERE c.password = :password")})
 public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @JoinColumn(name = "id_arena", referencedColumnName = "id_arena")
+    @ManyToOne(optional = false)
+    private Arena idArena;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -39,8 +43,6 @@ public class Client implements Serializable {
     @Column(name = "password")
     private String password;
     @Basic(optional = false)
-    @Column(name = "arena")
-    private short arena;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private Collection<Deck> deckCollection;
     @JoinColumn(name = "id_current_chest", referencedColumnName = "id_chest")
@@ -48,18 +50,18 @@ public class Client implements Serializable {
     private Chest idCurrentChest;
 
     public Client() {
-        
+
     }
 
     public Client(Short idClient) {
         this.idClient = idClient;
     }
 
-    public Client(Short idClient, String name, String password, short arena) {
+    public Client(Short idClient, String name, String password, Arena arena) {
         this.idClient = idClient;
         this.name = name;
         this.password = password;
-        this.arena = arena;
+        this.idArena = arena;
     }
 
     public Short getIdClient() {
@@ -86,17 +88,9 @@ public class Client implements Serializable {
         this.password = password;
     }
 
-    public short getArena() {
-        return arena;
-    }
-
-    public void setArena(short arena) {
-        this.arena = arena;
-    }
-
     @XmlTransient
     public Collection<Deck> getDeckCollection() {
-        return deckCollection;
+        return Collections.unmodifiableCollection(deckCollection);
     }
 
     public void setDeckCollection(Collection<Deck> deckCollection) {
@@ -135,5 +129,13 @@ public class Client implements Serializable {
     public String toString() {
         return "com.mycompany.clashcalculetor.Models.Client[ idClient=" + idClient + " ]";
     }
-    
+
+    public Arena getIdArena() {
+        return idArena;
+    }
+
+    public void setIdArena(Arena idArena) {
+        this.idArena = idArena;
+    }
+
 }

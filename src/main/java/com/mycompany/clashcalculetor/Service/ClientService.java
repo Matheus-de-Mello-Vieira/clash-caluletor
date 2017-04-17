@@ -5,10 +5,13 @@ import com.mycompany.clashcalculetor.Dao.ClientDao;
 import com.mycompany.clashcalculetor.Models.Client;
 
 public class ClientService {
-    ClientDao clientDao;
+    private ClientDao clientDao;
     private static Client currentClient;
     public ClientService(){
         clientDao=new ClientDao();
+    }
+    public void update(Client client){
+       clientDao.update(client);
     }
     public void singUp(Client client) {
         client.setIdCurrentChest(new ChestDao().findById(243));

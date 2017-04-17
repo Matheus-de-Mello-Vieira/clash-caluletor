@@ -12,12 +12,13 @@ package com.mycompany.clashcalculetor.Util.Exception;
 public class PasswordDontMachException extends Exception{
     private String err;
     public PasswordDontMachException(){
+        err="Password dont match";
     }
 
     /**
      * @return the err
      */
     public String getErr() {
-        return err;
+        return "Error "+err;
     }
 }

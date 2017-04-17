@@ -5,10 +5,11 @@
  */
 package com.mycompany.clashcalculetor.GUI;
 
+import com.mycompany.clashcalculetor.Models.Arena;
 import com.mycompany.clashcalculetor.Models.Client;
+import com.mycompany.clashcalculetor.Service.ArenaService;
 import com.mycompany.clashcalculetor.Service.ClientService;
 import com.mycompany.clashcalculetor.Util.Exception.PasswordDontMachException;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,9 +22,16 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     private ClientService clientService;
+    private ArenaService arenaService;
+
     public Login() {
         initComponents();
-        clientService=new ClientService();
+        arenaService = new ArenaService();
+        clientService = new ClientService();
+        jComboBox1.removeAllItems();
+        for (Arena arena : arenaService.listAll()) {
+            jComboBox1.addItem(arena.getName());
+        }
         setVisible(true);
     }
 
@@ -51,7 +59,7 @@ public class Login extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -106,12 +114,8 @@ public class Login extends javax.swing.JFrame {
         jLabel6.setText("Your arena:");
         jPanel2.add(jLabel6);
 
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jTextField6);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel2.add(jComboBox1);
 
         jButton2.setText("Register");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -132,22 +136,18 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
-
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(clientService.singIn(jTextField1.getText(), jTextField2.getText())){
+        if (clientService.singIn(jTextField1.getText(), jTextField2.getText())) {
             //opem a new windowns
-           this.setVisible(false);
-           new JanelaPrincipal().setVisible(true);
-        }else{
-           JOptionPane.showMessageDialog(null, "Failed to login:\nUsername or/and password is invalid");
+            this.setVisible(false);
+            new JanelaPrincipal().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to login:\nUsername or/and password is invalid");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -157,18 +157,21 @@ public class Login extends javax.swing.JFrame {
         //jTextField4 password
         //jTextField5 confirmpassword
         //jTextField6
-        try{
-            if(!jTextField4.getText().equals(jTextField5.getText())){
+        try {
+            if (!jTextField4.getText().equals(jTextField5.getText())) {
                 throw new PasswordDontMachException();
             }
-            Client client=new Client();
+            Client client = new Client();
             client.setName(jTextField3.getText());
             client.setPassword(jTextField4.getText());
-            client.setArena(Short.valueOf(jTextField6.getText()));
+            client.setIdArena(
+                    arenaService.findBy(
+                            String.valueOf(
+                                    jComboBox1.getSelectedItem())));
             clientService.singUp(client);
             this.setVisible(false);
-           new JanelaPrincipal().setVisible(true);
-        }catch(PasswordDontMachException e){
+            new JanelaPrincipal().setVisible(true);
+        } catch (PasswordDontMachException e) {
             JOptionPane.showMessageDialog(null, "Passwords does not match");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -180,6 +183,7 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -194,6 +198,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }

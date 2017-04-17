@@ -12,6 +12,6 @@ package com.mycompany.clashcalculetor.Util.Exception;
 public class InvalidChestException extends Exception{
     private static final long serialVersionUID = 1L;
     public String getText(){
-        return "It chest is impossible at your chest sequence";
+        return "Error: It chest is impossible at your chest sequence";
     } 
 }

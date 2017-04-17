@@ -7,6 +7,7 @@ package com.mycompany.clashcalculetor.Models;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -70,7 +71,7 @@ public class Chest implements Serializable {
 
     @XmlTransient
     public Collection<Client> getClientCollection() {
-        return clientCollection;
+        return Collections.unmodifiableCollection(clientCollection);
     }
 
     public void setClientCollection(Collection<Client> clientCollection) {

@@ -3,6 +3,7 @@ package com.mycompany.clashcalculetor.Service;
 import com.mycompany.clashcalculetor.Dao.ChestDao;
 import com.mycompany.clashcalculetor.Files.ChestFile;
 import com.mycompany.clashcalculetor.Models.Chest;
+import com.mycompany.clashcalculetor.Models.Client;
 import com.mycompany.clashcalculetor.Util.Exception.InvalidChestException;
 import com.mycompany.clashcalculetor.Util.Type.NextChest;
 import java.io.File;
@@ -15,12 +16,18 @@ import javax.swing.JOptionPane;
 
 public class ChestService {
 
-    ChestDao chestDao;
-    ChestFile chestFile;
+    private ChestDao chestDao;
+    private ChestFile chestFile;
+    private boolean chestIsDataBase;
 
-    public ChestService() {
+    public ChestService(Client client) {
         chestDao = new ChestDao();
         chestFile = new ChestFile();
+        chestIsDataBase = client.getIdCurrentChest().getIdChest() != 243;
+    }
+
+    public ChestService() {
+        this(ClientService.getCurrentClient());
     }
 
     public List<Chest> listAll() {
@@ -40,7 +47,22 @@ public class ChestService {
         createFile();
     }
 
-    public void nextChest(String chest) {
+    public boolean nextChest(String chest) {
+        if (chestIsDataBase) {
+            if (ClientService.getCurrentClient().getIdCurrentChest().getIdChest() == 240) {
+                ClientService.getCurrentClient().getIdCurrentChest().setIdChest(0);
+            }
+            ClientService
+                    .getCurrentClient()
+                    .getIdCurrentChest()
+                    .setIdChest(
+                            ClientService
+                                    .getCurrentClient()
+                                    .getIdCurrentChest().getIdChest() + 1);
+            new ClientService().update(ClientService.getCurrentClient());
+
+            return true;
+        }
         try {
             Integer[] result = chestFile.read();
             ArrayList<Chest> possibleChest = new ArrayList<>();
@@ -54,13 +76,23 @@ public class ChestService {
                         idChest++;
                         possibleChest.add(chestDao.findById(idChest));
                     }
-                    if(possibleChest.isEmpty()){
+                    if (possibleChest.isEmpty()) {
                         throw new InvalidChestException();
+                    } else if (possibleChest.size() == 1) {
+                        ClientService
+                                .getCurrentClient()
+                                .getIdCurrentChest()
+                                .setIdChest(possibleChest.get(0).getIdChest());
+                        new ClientService().update(ClientService.getCurrentClient());
+                        chestIsDataBase = true;
+                    } else {
+                        chestFile.writeListc(possibleChest);
                     }
-                    chestFile.writeListc(possibleChest);
-                }catch(InvalidChestException e){
+
+                } catch (InvalidChestException e) {
                     JOptionPane.showMessageDialog(null, e.getText());
-                }catch (NullPointerException e) {
+                    return false;
+                } catch (NullPointerException e) {
                     JOptionPane.showMessageDialog(null, "Erro, null in nextChest(String)");
 
                 } catch (Exception e) {
@@ -69,9 +101,12 @@ public class ChestService {
 
             }
 
+        } catch (NullPointerException e) {
+            resetFile();
         } catch (Exception ex) {
             Logger.getLogger(ChestService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return true;
     }
 
     public void createFile() {
@@ -89,6 +124,20 @@ public class ChestService {
     }
 
     public void nextChest() {
+        if (chestIsDataBase) {
+            if (ClientService.getCurrentClient().getIdCurrentChest().getIdChest() == 240) {
+                ClientService.getCurrentClient().getIdCurrentChest().setIdChest(0);
+            }
+            ClientService
+                    .getCurrentClient()
+                    .getIdCurrentChest()
+                    .setIdChest(
+                            ClientService
+                                    .getCurrentClient()
+                                    .getIdCurrentChest().getIdChest() + 1);
+            new ClientService().update(ClientService.getCurrentClient());
+            return;
+        }
         try {
             Integer[] results = chestFile.read();
             for (int i = 0; i < results.length; i++) {
@@ -100,15 +149,42 @@ public class ChestService {
                 }
                 results[i]++;
             }
-            chestFile.writeList(Arrays.asList(results));
+            if (results.length == 1) {
+                ClientService
+                        .getCurrentClient()
+                        .getIdCurrentChest()
+                        .setIdChest(results[0]);
+                new ClientService().update(ClientService.getCurrentClient());
+                chestIsDataBase = true;
+            } else {
+               chestFile.writeList(Arrays.asList(results));
+            }
         } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Erro, null in nextChest()");
+            resetFile();
         } catch (Exception e) {
 
         }
     }
 
     public NextChest calculetorNextChest() {
+        if (chestIsDataBase) {
+            NextChest nextChest = new NextChest();
+            switch (ClientService.getCurrentClient().getIdCurrentChest().getName()) {
+                case "Silver":
+                    nextChest.setPorcentSilver(nextChest.getPorcentSilver() + 1);
+                    break;
+                case "Gold":
+                    nextChest.setPorcentGold(nextChest.getPorcentGold() + 1);
+                    break;
+                case "Magic":
+                    nextChest.setPorcentMagic(nextChest.getPorcentMagic() + 1);
+                    break;
+                case "Gigan":
+                    nextChest.setPorcentGigant(nextChest.getPorcentGigant() + 1);
+                    break;
+            }
+            return nextChest;
+        }
         try {
             NextChest result = new NextChest();
             for (int index : chestFile.read()) {
@@ -129,6 +205,8 @@ public class ChestService {
             }
             return result;
 
+        } catch (NullPointerException e) {
+            resetFile();
         } catch (Exception ex) {
             Logger.getLogger(ChestService.class
                     .getName()).log(Level.SEVERE, null, ex);

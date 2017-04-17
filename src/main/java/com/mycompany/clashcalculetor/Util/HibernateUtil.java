@@ -5,6 +5,7 @@
  */
 package com.mycompany.clashcalculetor.Util;
 
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,7 +28,7 @@ public class HibernateUtil {
             sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (HibernateException ex) {
             // Log the exception. 
-            System.err.println("Initial SessionFactory creation failed." + ex);
+            JOptionPane.showMessageDialog(null,"Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
